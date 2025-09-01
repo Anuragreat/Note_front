@@ -54,10 +54,10 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (userData) => {
     try {
-      const response = await axios.post('/api/auth/signup', userData);
+      const response = await axios.post('https://noteapp-0eu4.onrender.com/api/auth/signup', userData);
 
       // Send OTP after signup
-      await axios.post(`/api/auth/send-otp?email=${userData.email}`);
+      await axios.post(`https://noteapp-0eu4.onrender.com/api/auth/send-otp?email=${userData.email}`);
 
       return {
         success: true,
@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }) => {
 
   const sendOtp = async (email) => {
     try {
-      const response = await axios.post(`/api/auth/send-otp?email=${email}`);
+      const response = await axios.post(`https://noteapp-0eu4.onrender.com/api/auth/send-otp?email=${email}`);
       return { success: true, message: response.data };
     } catch (error) {
       console.error('Send OTP error:', error);
@@ -89,7 +89,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, otp) => {
     try {
-      const response = await axios.post('/api/auth/login', { email, otp }, {
+      const response = await axios.post('https://noteapp-0eu4.onrender.com/api/auth/login', { email, otp }, {
         responseType: 'text', // ⚠️ Ensures response is treated as plain text
       });
 
