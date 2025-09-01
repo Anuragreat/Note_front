@@ -39,7 +39,7 @@ const Dashboard = () => {
 
     try {
       setIsLoading(true);
-      const response = await axios.post('/api/notes/add', {
+      const response = await axios.post('https://noteapp-0eu4.onrender.com/api/notes/add', {
         content: newNote.trim()
       });
       
@@ -64,7 +64,7 @@ const Dashboard = () => {
   const deleteNote = async (noteId) => {
     try {
       setIsLoading(true);
-      await axios.delete(`/api/notes/delete/${noteId}`);
+      await axios.delete(`https://noteapp-0eu4.onrender.com/api/notes/delete/${noteId}`);
       
       setNotes(prev => prev.filter(note => note.id !== noteId));
       setError('');

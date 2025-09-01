@@ -38,14 +38,9 @@ function App() {
               </PublicRoute>
             }
           />
-          <Route
-            path="/signup"
-            element={
-              <PublicRoute>
-                <SignUp />
-              </PublicRoute>
-            }
-          />
+        <Route path="/" element={<SignIn />} />
+        <Route path="/signin" element={<SignIn />} />
+  
           <Route
             path="/dashboard"
             element={
