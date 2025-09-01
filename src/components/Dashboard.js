@@ -86,7 +86,7 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard-container">
-      <div className="dashboard-mobile">
+      
         <div className="dashboard-header">
           <div className="hd-logo">HD</div>
           <h1>Dashboard</h1>
@@ -152,7 +152,6 @@ const Dashboard = () => {
             )}
           </div>
         </div>
-      </div>
     </div>
   );
 };
