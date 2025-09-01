@@ -18,46 +18,58 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
 
-  // Set up axios defaults
+  // Set axios Authorization header if token exists
   useEffect(() => {
     if (token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      try {
-        const decoded = jwt_decode(token);
-        const currentTime = Date.now() / 1000;
-        
-        if (decoded.exp > currentTime) {
-          setIsAuthenticated(true);
-          setUser(decoded);
-        } else {
-          // Token expired
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
+    }
+  }, [token]);
+
+  // Decode token on load
+  useEffect(() => {
+    const checkAuth = () => {
+      if (token) {
+        try {
+          const decoded = jwt_decode(token);
+          const currentTime = Date.now() / 1000;
+
+          if (decoded.exp > currentTime) {
+            setUser(decoded);
+            setIsAuthenticated(true);
+          } else {
+            logout();
+          }
+        } catch (error) {
+          console.error('Invalid token:', error);
           logout();
         }
-      } catch (error) {
-        console.error('Error decoding token:', error);
-        logout();
       }
-    }
+      setLoading(false);
+    };
+
+    checkAuth();
   }, [token]);
 
   const signup = async (userData) => {
     try {
       const response = await axios.post('/api/auth/signup', userData);
-      
-      // After signup, we need to send OTP
-      const otpResponse = await axios.post(`/api/auth/send-otp?email=${userData.email}`);
-      
-      return { 
-        success: true, 
+
+      // Send OTP after signup
+      await axios.post(`/api/auth/send-otp?email=${userData.email}`);
+
+      return {
+        success: true,
         message: response.data,
         requiresOtp: true,
-        email: userData.email
+        email: userData.email,
       };
     } catch (error) {
       console.error('Signup error:', error);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Signup failed' 
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Signup failed',
       };
     }
   };
@@ -68,47 +80,45 @@ export const AuthProvider = ({ children }) => {
       return { success: true, message: response.data };
     } catch (error) {
       console.error('Send OTP error:', error);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Failed to send OTP' 
+      return {
+        success: false,
+        error: error.response?.data?.message || 'Failed to send OTP',
       };
     }
   };
 
   const login = async (email, otp) => {
     try {
-      const response = await axios.post('/api/auth/login', {
-        email,
-        otp
+      const response = await axios.post('/api/auth/login', { email, otp }, {
+        responseType: 'text', // ⚠️ Ensures response is treated as plain text
       });
-      
-      // Check if response contains JWT token
-      if (response.data && typeof response.data === 'string' && response.data !== 'Invalid OTP') {
-        // Assuming the response is the JWT token
-        const token = response.data;
-        
-        localStorage.setItem('token', token);
-        setToken(token);
-        setIsAuthenticated(true);
-        
-        // Set user info from token or create a basic user object
-        const decoded = jwt_decode(token);
-        setUser(decoded);
-        
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-        
-        return { success: true };
-      } else {
-        return { 
-          success: false, 
-          error: response.data === 'Invalid OTP' ? 'Invalid OTP' : 'Login failed' 
+
+      const jwt = response.data;
+
+      if (!jwt || jwt === 'Invalid OTP') {
+        return {
+          success: false,
+          error: 'Invalid OTP',
         };
       }
+
+      // Save token
+      localStorage.setItem('token', jwt);
+      setToken(jwt);
+      setIsAuthenticated(true);
+      axios.defaults.headers.common['Authorization'] = `Bearer ${jwt}`;
+
+      // Decode and store user info
+      const decoded = jwt_decode(jwt);
+      setUser(decoded);
+
+      return { success: true };
+
     } catch (error) {
       console.error('Login error:', error);
-      return { 
-        success: false, 
-        error: error.response?.data?.message || 'Login failed' 
+      return {
+        success: false,
+        error: error.response?.data || 'Login failed',
       };
     }
   };
