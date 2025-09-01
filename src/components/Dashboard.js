@@ -238,8 +238,15 @@ const Dashboard = () => {
   const fetchNotes = async () => {
     try {
       setIsLoading(true);
+      const token = localStorage.getItem('token');
+
       const response = await axios.get(
-        `https://noteapp-0eu4.onrender.com/api/notes/all/${user.email}`
+        `https://noteapp-0eu4.onrender.com/api/notes/all/${user.email}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       setNotes(response.data);
       setError('');
