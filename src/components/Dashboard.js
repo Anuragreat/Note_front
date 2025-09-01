@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    console.log('User object:', user); //to be deleted
     if (user?.email) {
       fetchNotes();
     }
