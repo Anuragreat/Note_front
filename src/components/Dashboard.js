@@ -216,33 +216,19 @@
 
 
 
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // for redirect after logout
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { user, logout, token } = useAuth();
-  const navigate = useNavigate();
-
+  const { user, logout } = useAuth();
   const [notes, setNotes] = useState([]);
-  const [newTitle, setNewTitle] = useState('');
-  const [newContent, setNewContent] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Setup axios auth header whenever token changes
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    } else {
-      delete axios.defaults.headers.common['Authorization'];
-    }
-  }, [token]);
-
-  // Fetch notes for the user on mount or when user changes
   useEffect(() => {
     if (user?.email) {
       fetchNotes();
@@ -250,13 +236,15 @@ const Dashboard = () => {
   }, [user]);
 
   const fetchNotes = async () => {
-    setIsLoading(true);
     try {
-      const response = await axios.get(`https://noteapp-0eu4.onrender.com/api/notes/all/${user.email}`);
+      setIsLoading(true);
+      const response = await axios.get(
+        `https://noteapp-0eu4.onrender.com/api/notes/all/${user.email}`
+      );
       setNotes(response.data);
       setError('');
-    } catch (err) {
-      console.error('Error fetching notes:', err);
+    } catch (error) {
+      console.error('Error fetching notes:', error);
       setError('Failed to fetch notes');
     } finally {
       setIsLoading(false);
@@ -264,24 +252,26 @@ const Dashboard = () => {
   };
 
   const createNote = async () => {
-    if (!newContent.trim()) return;
-
-    setIsLoading(true);
+    if (!content.trim()) return;
     try {
-      const body = {
-        title: newTitle.trim() || 'Untitled',
-        content: newContent.trim(),
+      setIsLoading(true);
+      const response = await axios.post(
+        'https://noteapp-0eu4.onrender.com/api/notes/add',
+        { title, content }
+      );
+
+      const newNote = {
+        id: response.data.id || Date.now(),
+        title: title || 'Untitled',
+        content,
       };
 
-      const response = await axios.post('https://noteapp-0eu4.onrender.com/api/notes/add', body);
-      
-      // Add new note from response (assuming response.data has the created note)
-      setNotes(prev => [...prev, response.data]);
-      setNewTitle('');
-      setNewContent('');
+      setNotes(prev => [...prev, newNote]);
+      setTitle('');
+      setContent('');
       setError('');
-    } catch (err) {
-      console.error('Error creating note:', err);
+    } catch (error) {
+      console.error('Error creating note:', error);
       setError('Failed to create note');
     } finally {
       setIsLoading(false);
@@ -289,13 +279,12 @@ const Dashboard = () => {
   };
 
   const deleteNote = async (noteId) => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       await axios.delete(`https://noteapp-0eu4.onrender.com/api/notes/delete/${noteId}`);
       setNotes(prev => prev.filter(note => note.id !== noteId));
-      setError('');
-    } catch (err) {
-      console.error('Error deleting note:', err);
+    } catch (error) {
+      console.error('Error deleting note:', error);
       setError('Failed to delete note');
     } finally {
       setIsLoading(false);
@@ -304,7 +293,6 @@ const Dashboard = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/signin'); // redirect to signin page
   };
 
   return (
@@ -314,7 +302,7 @@ const Dashboard = () => {
           <div className="hd-logo">HD</div>
           <h1>Dashboard</h1>
           <button onClick={handleLogout} className="signout-button">
-            Sign Out
+            Sign out
           </button>
         </div>
 
@@ -327,22 +315,22 @@ const Dashboard = () => {
           <div className="create-note-section">
             <input
               type="text"
-              placeholder="Note Title (optional)"
-              value={newTitle}
-              onChange={(e) => setNewTitle(e.target.value)}
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title (optional)"
               className="note-title-input"
             />
             <textarea
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               placeholder="Type your note here..."
-              value={newContent}
-              onChange={(e) => setNewContent(e.target.value)}
-              rows={3}
+              rows="4"
               className="note-input"
             />
-            <button 
-              onClick={createNote} 
+            <button
+              onClick={createNote}
               className="create-note-button"
-              disabled={isLoading || !newContent.trim()}
+              disabled={isLoading || !content.trim()}
             >
               Create Note
             </button>
@@ -351,24 +339,21 @@ const Dashboard = () => {
           <div className="notes-section">
             <h3>Notes</h3>
             {error && <div className="error-message">{error}</div>}
-
             {isLoading ? (
               <div className="loading">Loading notes...</div>
             ) : notes.length === 0 ? (
               <div className="no-notes">No notes yet. Create your first note!</div>
             ) : (
               <div className="notes-list">
-                {notes.map(note => (
+                {notes.map((note) => (
                   <div key={note.id} className="note-item">
                     <div>
-                      <strong>{note.title || 'Untitled'}</strong>
-                      <p className="note-content">{note.content}</p>
+                      {note.title && <strong>{note.title}</strong>}
+                      <div className="note-content">{note.content}</div>
                     </div>
                     <button
                       onClick={() => deleteNote(note.id)}
                       className="delete-note-button"
-                      disabled={isLoading}
-                      title="Delete note"
                     >
                       🗑️
                     </button>
@@ -379,8 +364,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
-      {/* You can add desktop view if needed based on your CSS */}
     </div>
   );
 };

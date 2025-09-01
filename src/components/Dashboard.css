@@ -178,12 +178,6 @@
   background-color: #fee2e2;
 }
 
-/* Desktop View Styles */
-.dashboard-desktop {
-  padding: 40px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
 
 .dashboard-desktop .dashboard-header {
   margin-bottom: 40px;
@@ -224,7 +218,7 @@
   align-items: center;
 }
 
-.note-input {
+/* .note-input {
   width: 100%;
   max-width: 600px;
   padding: 16px;
@@ -234,8 +228,27 @@
   resize: vertical;
   min-height: 100px;
   transition: border-color 0.2s ease;
+} */
+
+.note-title-input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
 }
 
+
+.note-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 10px;
+}
 .note-input:focus {
   border-color: #2563eb;
 }
