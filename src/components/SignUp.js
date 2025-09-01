@@ -64,9 +64,9 @@ const SignUp = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            fullName: formData.fullName,
+            name: formData.fullName,
             email: formData.email,
-            dateOfBirth: formData.dateOfBirth,
+            dob: formData.dateOfBirth,
           }),
         });
 
