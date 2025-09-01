@@ -13,7 +13,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     console.log('User object:', user); //to be deleted
-    if (user?.email) {
+    if (user?.sub) {
       fetchNotes();
     }
   }, [user]);
@@ -24,7 +24,7 @@ const Dashboard = () => {
       const token = localStorage.getItem('token');
 
       const response = await axios.get(
-        `https://noteapp-0eu4.onrender.com/api/notes/all/${user.email}`,
+        `https://noteapp-0eu4.onrender.com/api/notes/all/${user.sub}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -100,7 +100,7 @@ const Dashboard = () => {
         <div className="dashboard-content">
           <div className="welcome-section">
             <h2>Welcome, {user?.fullName || 'User'}!</h2>
-            <p className="user-email">{user?.email || 'user@example.com'}</p>
+            <p className="user-email">{user?.sub || 'user@example.com'}</p>
           </div>
 
           <div className="create-note-section">
