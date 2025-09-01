@@ -30,7 +30,7 @@ const Dashboard = () => {
           },
         }
       );
-      setNotes(response.data);
+      setNotes(Array.isArray(response.data) ? response.data : response.data.notes || []);
       setError('');
     } catch (error) {
       console.error('Error fetching notes:', error);
