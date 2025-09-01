@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './SignIn.css';
 
@@ -7,7 +7,10 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  const [formData, setFormData] = useState({ email: '', otp: '' });
+  const location = useLocation();
+  const emailFromSignup = location.state?.email || '';
+  const [formData, setFormData] = useState({ email: emailFromSignup, otp: '' });
+
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
