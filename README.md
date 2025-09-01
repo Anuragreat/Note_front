@@ -2,6 +2,10 @@
 
 A modern, responsive React frontend for the HD Notes application that integrates with Spring Boot backend. This application provides a beautiful user interface for user authentication and notes management.
 
+
+##backend on https://noteapp-0eu4.onrender.com
+##frontend on https://note-front-tau.vercel.app/
+
 ## Features
 
 - **Responsive Design**: Mobile-first approach with both mobile and desktop views
