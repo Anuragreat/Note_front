@@ -1,29 +1,8 @@
 .dashboard-container {
   min-height: 100vh;
   background-color: #f5f5f5;
+  padding: 20px; /* unified padding */
 }
-
-/* Mobile View Styles */
-.dashboard-mobile {
-  padding: 20px;
-}
-
-
-.note-title-input {
-  width: 100%;
-  max-width: 600px;
-  padding: 12px 16px;
-  margin-bottom: 12px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.2s ease;
-}
-
-.note-title-input:focus {
-  border-color: #2563eb;
-}
-
 
 .dashboard-header {
   display: flex;
@@ -50,6 +29,7 @@
   font-size: 14px;
   font-weight: 500;
   transition: background-color 0.2s ease;
+  cursor: pointer;
 }
 
 .signout-button:hover {
@@ -62,7 +42,9 @@
   gap: 24px;
 }
 
-.welcome-section {
+.welcome-section,
+.create-note-section,
+.notes-section {
   background: white;
   padding: 20px;
   border-radius: 12px;
@@ -82,14 +64,6 @@
   font-size: 14px;
 }
 
-.create-note-section {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}
-
 .create-note-button {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   color: white;
@@ -98,17 +72,11 @@
   font-size: 16px;
   font-weight: 600;
   transition: transform 0.2s ease;
+  cursor: pointer;
 }
 
 .create-note-button:hover:not(:disabled) {
   transform: translateY(-1px);
-}
-
-.notes-section {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .notes-section h3 {
@@ -128,16 +96,14 @@
   text-align: center;
 }
 
-.loading {
+.loading,
+.no-notes {
   text-align: center;
   color: #6b7280;
   padding: 20px;
 }
 
 .no-notes {
-  text-align: center;
-  color: #6b7280;
-  padding: 40px 20px;
   font-style: italic;
 }
 
@@ -178,39 +144,6 @@
   background-color: #fee2e2;
 }
 
-
-.dashboard-desktop .dashboard-header {
-  margin-bottom: 40px;
-  padding: 24px 32px;
-  border-radius: 16px;
-}
-
-.dashboard-desktop .dashboard-header h1 {
-  font-size: 28px;
-}
-
-.dashboard-desktop .dashboard-content {
-  gap: 32px;
-}
-
-.dashboard-desktop .welcome-section {
-  padding: 32px;
-  border-radius: 16px;
-}
-
-.dashboard-desktop .welcome-section h2 {
-  font-size: 24px;
-}
-
-.dashboard-desktop .user-email {
-  font-size: 16px;
-}
-
-.dashboard-desktop .create-note-section {
-  padding: 32px;
-  border-radius: 16px;
-}
-
 .note-input-container {
   display: flex;
   flex-direction: column;
@@ -218,119 +151,39 @@
   align-items: center;
 }
 
-/* .note-input {
-  width: 100%;
-  max-width: 600px;
-  padding: 16px;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 16px;
-  resize: vertical;
-  min-height: 100px;
-  transition: border-color 0.2s ease;
-} */
-
-.note-title-input {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 10px;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-
+.note-title-input,
 .note-input {
   width: 100%;
-  padding: 12px;
+  max-width: 600px;
+  padding: 12px 16px;
   border: 1px solid #e5e7eb;
   border-radius: 6px;
   font-size: 14px;
   resize: vertical;
   margin-bottom: 10px;
+  transition: border-color 0.2s ease;
 }
+
+.note-title-input:focus,
 .note-input:focus {
   border-color: #2563eb;
 }
 
-.dashboard-desktop .create-note-button {
-  padding: 16px 32px;
-  font-size: 18px;
-}
-
-.dashboard-desktop .notes-section {
-  padding: 32px;
-  border-radius: 16px;
-}
-
-.dashboard-desktop .notes-section h3 {
-  font-size: 20px;
-  margin-bottom: 24px;
-}
-
-.dashboard-desktop .notes-list {
-  gap: 16px;
-}
-
-.dashboard-desktop .note-item {
-  padding: 20px;
-  border-radius: 12px;
-}
-
-.dashboard-desktop .note-content {
-  font-size: 16px;
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .dashboard-mobile {
-    padding: 16px;
-  }
-  
-  .dashboard-header {
-    padding: 12px 16px;
-    margin-bottom: 20px;
-  }
-  
+/* Minor responsive tweak (optional) */
+@media (max-width: 480px) {
   .dashboard-header h1 {
     font-size: 20px;
   }
-  
-  .welcome-section,
-  .create-note-section,
-  .notes-section {
-    padding: 16px;
-  }
-  
+
   .welcome-section h2 {
     font-size: 18px;
   }
-  
+
   .notes-section h3 {
     font-size: 16px;
   }
-  
-  .note-item {
-    padding: 12px;
-  }
-  
+
   .note-content {
     font-size: 13px;
-  }
-}
-
-@media (min-width: 769px) and (max-width: 1024px) {
-  .dashboard-desktop {
-    padding: 30px;
-  }
-  
-  .dashboard-desktop .dashboard-header {
-    padding: 20px 28px;
-  }
-  
-  .dashboard-desktop .welcome-section,
-  .dashboard-desktop .create-note-section,
-  .dashboard-desktop .notes-section {
-    padding: 24px;
   }
 }
