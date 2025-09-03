@@ -19,9 +19,13 @@ This application provides a beautiful user interface for **OTP-based authenticat
 ---
 
 ## 📸 Screenshots
-![Alt text](https://github.com/Anuragreat/Note_front/blob/main/Screenshot_20250904_001712_Chrome.jpg)
-![Alt text](https://github.com/Anuragreat/Note_front/blob/main/Screenshot_20250904_002042_Chrome.jpg)
-![Alt text](https://github.com/Anuragreat/Note_front/blob/main/Screenshot_20250904_002153_Chrome.jpg)
+
+
+<div align="center">
+  <img src="https://github.com/Anuragreat/Note_front/blob/main/Screenshot_20250904_001712_Chrome.jpg" alt="Screenshot 1" width="30%"/>
+  <img src="https://github.com/Anuragreat/Note_front/blob/main/Screenshot_20250904_002042_Chrome.jpg" alt="Screenshot 2" width="30%"/>
+  <img src="https://github.com/Anuragreat/Note_front/blob/main/Screenshot_20250904_002153_Chrome.jpg" alt="Screenshot 3" width="30%"/>
+</div>
 
 Includes:
 
