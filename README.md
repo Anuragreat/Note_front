@@ -1,97 +1,109 @@
-# HD Notes App - React Frontend
+# 📝 HD Notes App - React Frontend
 
-A modern, responsive React frontend for the HD Notes application that integrates with Spring Boot backend. This application provides a beautiful user interface for user authentication and notes management.
+A modern, responsive React frontend for the **HD Notes application** that integrates with a **Spring Boot backend**.
+This application provides a beautiful user interface for **OTP-based authentication** and **notes management**.
 
+🔗 **Backend Live:** [noteapp-0eu4.onrender.com](https://noteapp-0eu4.onrender.com)
+🔗 **Frontend Live:** [note-front-tau.vercel.app](https://note-front-tau.vercel.app/)
 
-##backend on https://noteapp-0eu4.onrender.com
-##frontend on https://note-front-tau.vercel.app/
+---
 
-## Features
+## ✨ Features
 
-- **Responsive Design**: Mobile-first approach with both mobile and desktop views
-- **JWT Authentication**: Secure signup, signin, and logout functionality
-- **Notes Management**: Create, view, and delete notes
-- **Modern UI**: Beautiful design matching your Figma template
-- **Protected Routes**: Automatic redirection based on authentication status
+* 📱 **Responsive Design**: Mobile-first, works on all devices
+* 🔐 **OTP + JWT Authentication**: Secure login using OTP sent to email
+* 📝 **Notes Management**: Create, view, and delete notes
+* 🎨 **Modern UI**: Clean and minimal design
+* 🔄 **Protected Routes**: Redirects automatically if not authenticated
 
-## Screenshots
+---
 
-The application includes:
-- **Sign Up**: User registration with form validation
-- **Sign In**: User authentication with remember me option
-- **Dashboard**: Notes management with create/delete functionality
+## 📸 Screenshots
 
-## Prerequisites
+Includes:
 
-- Node.js (version 14 or higher)
-- npm or yarn
-- Your Spring Boot backend running on `http://localhost:8080`
+* **Sign Up**: Register with email
+* **Send OTP & Sign In**: Login with OTP (JWT issued after verification)
+* **Dashboard**: Manage notes (create, view, delete)
 
-## Installation
+---
 
-1. **Clone or navigate to your project directory**
+## ⚙️ Prerequisites
+
+* Node.js (v14 or higher)
+* npm or yarn
+* Spring Boot backend running locally (`http://localhost:8080`) or via [deployed backend](https://noteapp-0eu4.onrender.com)
+
+---
+
+## 🛠 Installation
+
+1. **Clone repo**
+
    ```bash
-   cd /path/to/your/project
+   git clone https://github.com/Anuragreat/noteapp-frontend.git
+   cd noteapp-frontend
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
-3. **Start the development server**
+3. **Start development server**
+
    ```bash
    npm start
    ```
 
-4. **Open your browser**
-   Navigate to `http://localhost:3000`
+4. **Open in browser**
 
-## Project Structure
+   ```
+   http://localhost:3000
+   ```
+
+---
+
+## 📂 Project Structure
 
 ```
 src/
 ├── components/
-│   ├── SignUp.js          # User registration component
-│   ├── SignUp.css         # SignUp component styles
-│   ├── SignIn.js          # User authentication component
-│   ├── SignIn.css         # SignIn component styles
-│   ├── Dashboard.js       # Main dashboard component
-│   └── Dashboard.css      # Dashboard component styles
+│   ├── SignUp.js        # User registration
+│   ├── SignIn.js        # OTP-based login
+│   ├── Dashboard.js     # Notes dashboard
+│   └── *.css            # Component styles
 ├── contexts/
-│   └── AuthContext.js     # JWT authentication context
-├── App.js                 # Main application component
-├── App.css                # Global application styles
-├── index.js               # Application entry point
-└── index.css              # Base styles
+│   └── AuthContext.js   # Handles JWT auth state
+├── App.js               # Main app component
+└── index.js             # Entry point
 ```
 
-## Backend Integration
+---
 
-This frontend expects your Spring Boot backend to have the following endpoints:
+## 🔗 Backend Integration
 
-### Authentication Endpoints
-- `POST /api/auth/signup` - User registration
-- `POST /api/auth/send-otp` - Send OTP to user's email
-- `POST /api/auth/login` - User login with email and OTP
+This frontend works with your **Spring Boot backend APIs**:
 
-### Notes Endpoints
-- `POST /api/notes/add` - Create a new note
-- `DELETE /api/notes/delete/{id}` - Delete a note
+### 🔐 Authentication
 
-### Expected Request/Response Format
+* `POST /api/auth/signup` → Register new user
+* `POST /api/auth/send-otp?email=user@mail.com` → Send OTP
+* `POST /api/auth/login` → Login with email + OTP → returns JWT
 
-#### Signup Request
-```json
-{
-  "fullName": "John Doe",
-  "email": "john@example.com",
-  "dateOfBirth": "1990-01-01",
-  "password": "password123"
-}
-```
+### 📝 Notes
 
-#### Login Request
+* `POST /api/notes/add` → Create a new note (requires JWT in headers)
+* `GET /api/notes/all/{userId}` → Fetch all notes
+* `DELETE /api/notes/delete/{id}` → Delete a note
+
+---
+
+## 📤 Example Requests
+
+### 🔑 Login Request
+
 ```json
 {
   "email": "john@example.com",
@@ -99,86 +111,36 @@ This frontend expects your Spring Boot backend to have the following endpoints:
 }
 ```
 
-#### Notes Request
+### 📝 Create Note Request
+
 ```json
 {
   "content": "Your note content here"
 }
 ```
 
-## Configuration
+---
 
-The application is configured to proxy requests to your Spring Boot backend running on port 8080. If you need to change this:
+## 🖌 Styling
 
-1. Update the `proxy` field in `package.json`
-2. Or modify the axios base URL in `AuthContext.js`
+* CSS3 with Flexbox & Grid
+* Responsive design for both mobile & desktop
+* Smooth animations and transitions
 
-## Available Scripts
+---
 
-- `npm start` - Start development server
-- `npm build` - Build for production
-- `npm test` - Run tests
-- `npm eject` - Eject from Create React App (not recommended)
+## 🌍 Browser Support
 
-## Responsive Design
+✅ Chrome, ✅ Firefox, ✅ Safari, ✅ Edge (latest versions)
 
-The application automatically switches between mobile and desktop views based on screen size:
-- **Mobile**: Optimized for screens ≤768px
-- **Desktop**: Optimized for screens >768px
+---
 
-## Styling
+## 🛠 Troubleshooting
 
-The application uses:
-- CSS3 with modern features
-- Flexbox for layout
-- CSS Grid for complex layouts
-- CSS animations and transitions
-- Responsive design principles
+* **Backend not connecting** → Check backend is running at port `8080` or update `proxy` in `package.json`
+* **Invalid JWT** → Clear localStorage and re-login
+* **Port conflict** → Run with custom port:
 
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Backend Connection Error**
-   - Ensure your Spring Boot backend is running on port 8080
-   - Check that CORS is properly configured on your backend
-
-2. **JWT Token Issues**
-   - Clear browser localStorage and try again
-   - Check that your backend is sending proper JWT tokens
-
-3. **Port Already in Use**
-   - Kill the process using port 3000: `npx kill-port 3000`
-   - Or use a different port: `PORT=3001 npm start`
-
-### Development Tips
-
-- Use browser developer tools to inspect network requests
-- Check the console for any JavaScript errors
-- Verify that your backend endpoints match the expected format
-
-## Contributing
-
-1. Make your changes
-2. Test thoroughly on both mobile and desktop
-3. Ensure responsive design works correctly
-4. Test authentication flow end-to-end
-
-## License
-
-This project is part of your HD Notes application.
-
-## Support
-
-If you encounter any issues:
-1. Check the browser console for errors
-2. Verify backend connectivity
-3. Ensure all dependencies are installed correctly
-"# Note_front" 
+  ```bash
+  PORT=3001 npm start
+  ```
